@@ -1,29 +1,30 @@
-package dijkstra
+package dijkstra.objects.ui
 
 import dijkstra.dialogs.DialogContainer
+import dijkstra.objects.State
 import java.awt.Color
+import java.awt.Dimension
+import java.util.logging.Logger
 import javax.swing.BoxLayout
 import javax.swing.JPanel
 import javax.swing.border.LineBorder
 
-public class DialogUI : DialogContainer {
+public class Dialog(state: State, logger: Logger) : DialogContainer() {
 
-    constructor() {
-        logger.info("Init graph container")
+    init {
+        logger.info("Initializing dialog.")
         graphPanelContainer.setBorder(LineBorder(Color.BLACK, 1))
         graphPanelContainer.setLayout(BoxLayout(graphPanelContainer, BoxLayout.LINE_AXIS))
+        graphPanelContainer.add(Canvas(state));
     }
 
     public fun getGraphContainer(): JPanel {
         return mainContainer
     }
 
-    public fun getBoardContainer(): JPanel {
-        return graphPanelContainer;
-    }
-
     public fun refresh() {
         mainContainer.invalidate()
+        mainContainer.repaint()
     }
 
 }

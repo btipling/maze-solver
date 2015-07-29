@@ -1,11 +1,14 @@
 package dijkstra
 
 import dijkstra.dialogs.DialogContainer
+import dijkstra.objects.ui.Dialog
+import dijkstra.objects.State
 import java.awt.BorderLayout
 import java.awt.Container
 import java.awt.Dimension
 import java.awt.Label
 import java.util.logging.Logger
+import javax.swing.BoxLayout
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
@@ -19,14 +22,14 @@ private val logger = Logger.getLogger("DialogUI")
 
 public fun run () {
     val frame: JFrame = JFrame("FrameDemo")
-    val graphContainer = DialogUI()
+    val state = State()
+    val dialog = Dialog(state, logger)
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
     val myLabel: Label = Label("Sup")
     val container: Container = frame.getContentPane()
     container.add(myLabel, BorderLayout.CENTER)
-    container.add(graphContainer.getGraphContainer(), BorderLayout.CENTER)
+    container.add(dialog.getGraphContainer(), BorderLayout.CENTER)
     frame.setMinimumSize(Dimension(500, 200))
-    val board = Board(graphContainer)
     frame.pack()
     frame.setVisible(true)
 }
