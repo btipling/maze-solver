@@ -26,6 +26,7 @@ public fun run () {
     container.add(myLabel, BorderLayout.CENTER)
     container.add(graphContainer.getGraphContainer(), BorderLayout.CENTER)
     frame.setMinimumSize(Dimension(500, 200))
+    val board = Board(graphContainer)
     frame.pack()
     frame.setVisible(true)
 }
