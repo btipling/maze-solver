@@ -1,10 +1,10 @@
 package dijkstra.objects
 
 
-class Grid(width: Int, height: Int) {
-    public val width: Int = width
-    public val height: Int = height
-    private val grid = Array<Array<Int>>(width, {arrayOf<Int>(height) })
+class Grid(columns: Int, rows: Int) {
+    public val columns: Int = columns
+    public val rows: Int = rows
+    private val grid = Array<Array<Int>>(columns, {arrayOf<Int>(rows) })
     public fun get(x: Int, y: Int) : Int {
         return grid[x][y]
     }

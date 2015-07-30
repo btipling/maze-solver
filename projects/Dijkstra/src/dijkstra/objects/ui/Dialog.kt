@@ -13,7 +13,7 @@ public class Dialog(state: State, logger: Logger) : DialogContainer() {
 
     init {
         logger.info("Initializing dialog.")
-        graphPanelContainer.setBorder(LineBorder(Color.BLACK, 1))
+        graphPanelContainer.setBorder(LineBorder(Color.DARK_GRAY, 1))
         graphPanelContainer.setLayout(BoxLayout(graphPanelContainer, BoxLayout.LINE_AXIS))
         graphPanelContainer.add(Canvas(state));
     }

@@ -3,10 +3,7 @@ package dijkstra
 import dijkstra.dialogs.DialogContainer
 import dijkstra.objects.ui.Dialog
 import dijkstra.objects.State
-import java.awt.BorderLayout
-import java.awt.Container
-import java.awt.Dimension
-import java.awt.Label
+import java.awt.*
 import java.util.logging.Logger
 import javax.swing.BoxLayout
 import javax.swing.JFrame
@@ -31,5 +28,6 @@ public fun run () {
     container.add(dialog.getGraphContainer(), BorderLayout.CENTER)
     frame.setMinimumSize(Dimension(500, 200))
     frame.pack()
+    frame.setLocationRelativeTo(null)
     frame.setVisible(true)
 }
