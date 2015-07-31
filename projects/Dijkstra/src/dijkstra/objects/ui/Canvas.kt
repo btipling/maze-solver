@@ -13,6 +13,7 @@ import javax.swing.JPanel
 class Canvas(state: State) : JPanel() {
     val state = state
     var over: Point? = null
+    var dragMarker: Grid.Marker? = null
 
     class Point(x: Int, y: Int) {
         public val x: Int = x;
@@ -51,6 +52,13 @@ class Canvas(state: State) : JPanel() {
         setLayout(BoxLayout(this, BoxLayout.LINE_AXIS))
         addMouseMotionListener(object: MouseMotionListener {
             override fun mouseDragged(e: MouseEvent) {
+                if (dragMarker == null) {
+                    return
+                }
+                val dM = dragMarker!!
+                val eventLocation = EventLocation(e, state)
+                state.grid.set(eventLocation.x, eventLocation.y, dM)
+                repaint()
             }
 
             override fun mouseMoved(e: MouseEvent) {
@@ -76,9 +84,16 @@ class Canvas(state: State) : JPanel() {
             }
 
             override fun mousePressed(e: MouseEvent) {
+                val eventLocation = EventLocation(e, state)
+                dragMarker = Grid.Marker.WALL
+                if (state.grid.get(eventLocation.x, eventLocation.y).equals(Grid.Marker.WALL)) {
+                    dragMarker = Grid.Marker.DEFAULT
+                }
+                over = null
             }
 
             override fun mouseReleased(e: MouseEvent) {
+                dragMarker = null
             }
 
             override fun mouseEntered(e: MouseEvent) {
