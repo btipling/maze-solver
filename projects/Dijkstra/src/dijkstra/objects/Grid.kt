@@ -5,15 +5,21 @@ class Grid(columns: Int, rows: Int) {
     public val columns: Int = columns
     public val rows: Int = rows
     private val grid = Array<Array<Marker>>(columns, {Array<Marker>(rows, {Marker.DEFAULT}) })
+    private var startPos: MarkerPos? = null
+    private var endPos: MarkerPos? = null
 
     public enum class Marker {
         DEFAULT, WALL, OVER, START, END
     }
 
+    private class MarkerPos(x: Int, y: Int) {
+        public val x: Int = x
+        public val y: Int = y
+    }
+
     init {
-        grid[0][0] = Marker.START
-        val col = grid.last()
-        col.set(col.size()-1, Marker.END)
+        set(0, 0, Marker.START)
+        set(columns - 1, rows - 1, Marker.END)
     }
 
     public fun get(x: Int, y: Int) : Marker {
@@ -25,6 +31,18 @@ class Grid(columns: Int, rows: Int) {
             if (currentValue == Marker.START || currentValue == Marker.END) {
                 return
             }
+        }
+        if (value == Marker.START) {
+            if (startPos != null) {
+                grid[startPos!!.x][startPos!!.y] = Marker.DEFAULT
+            }
+            startPos = MarkerPos(x, y)
+        }
+        if (value == Marker.END) {
+            if (endPos != null) {
+                grid[endPos!!.x][endPos!!.y] = Marker.DEFAULT
+            }
+            endPos = MarkerPos(x, y)
         }
         grid[x][y] = value
     }

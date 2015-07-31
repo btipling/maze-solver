@@ -3,16 +3,16 @@ package dijkstra.objects.ui
 import dijkstra.objects.Grid
 import dijkstra.objects.State
 import java.awt.*
-import java.awt.event.MouseEvent
-import java.awt.event.MouseListener
-import java.awt.event.MouseMotionListener
-import javax.swing.BoxLayout
-import javax.swing.JPanel
+import java.awt.event.*
+import java.util.logging.Logger
+import javax.swing.*
 
-
-class Canvas(state: State) : JPanel() {
+class Canvas(state: State, logger: Logger) : JPanel() {
     val state = state
     var over: Point? = null
+    val popupMenu = JPopupMenu()
+    val logger = logger
+    var lastLoc: EventLocation? = null
     var dragMarker: Grid.Marker? = null
 
     class Point(x: Int, y: Int) {
@@ -45,6 +45,7 @@ class Canvas(state: State) : JPanel() {
     }
 
     init {
+        val self = this
         setMinimumSize(state.canvasDimension)
         setMaximumSize(state.canvasDimension)
         setPreferredSize(state.canvasDimension)
@@ -66,19 +67,23 @@ class Canvas(state: State) : JPanel() {
                 over = Point(eventLocation.x, eventLocation.y)
                 repaint()
             }
-
         })
         addMouseListener(object : MouseListener {
 
             override fun mouseClicked(e: MouseEvent) {
-                val eventLocation = EventLocation(e, state)
-                if (!eventLocation.isValid()) {
+                val loc = EventLocation(e, state)
+                lastLoc = loc
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    popupMenu.show(self, e.getX(), e.getY())
+                    return
+                }
+                if (!loc.isValid()) {
                     return;
                 }
-                if (state.grid.get(eventLocation.x, eventLocation.y).equals(Grid.Marker.WALL)) {
-                    state.grid.set(eventLocation.x, eventLocation.y, Grid.Marker.DEFAULT)
+                if (state.grid.get(loc.x, loc.y).equals(Grid.Marker.WALL)) {
+                    state.grid.set(loc.x, loc.y, Grid.Marker.DEFAULT)
                 } else {
-                    state.grid.set(eventLocation.x, eventLocation.y, Grid.Marker.WALL)
+                    state.grid.set(loc.x, loc.y, Grid.Marker.WALL)
                 }
                 repaint()
             }
@@ -104,6 +109,27 @@ class Canvas(state: State) : JPanel() {
                 repaint()
             }
         })
+        var menuItem = JMenuItem("Set to start")
+        fun setMarker(marker: Grid.Marker) {
+            if (lastLoc == null) {
+                return
+            }
+            state.grid.set(lastLoc!!.x, lastLoc!!.y, marker)
+        }
+        menuItem.addActionListener({e: ActionEvent -> run {
+            logger.info("Setting to start")
+            setMarker(Grid.Marker.START)
+            repaint()
+        }})
+        popupMenu.add(menuItem)
+        menuItem = JMenuItem("Set to end")
+        menuItem.addActionListener({e: ActionEvent -> run {
+            logger.info("Setting to end")
+            setMarker(Grid.Marker.END)
+            repaint()
+        }})
+        popupMenu.add(menuItem)
+        self.setComponentPopupMenu(popupMenu)
     }
 
 
