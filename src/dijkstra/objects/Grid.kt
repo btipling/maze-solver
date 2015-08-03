@@ -9,7 +9,7 @@ class Grid(columns: Int, rows: Int) {
     private var endPos: MarkerPos? = null
 
     public enum class Marker {
-        DEFAULT, WALL, OVER, START, END
+        DEFAULT, WALL, OVER, START, END, PATH
     }
 
     private class MarkerPos(x: Int, y: Int) {

@@ -15,11 +15,6 @@ class Canvas(state: State, logger: Logger) : JPanel() {
     var lastLoc: EventLocation? = null
     var dragMarker: Grid.Marker? = null
 
-    class Point(x: Int, y: Int) {
-        public val x: Int = x;
-        public val y: Int = y;
-    }
-
     class EventLocation(e: MouseEvent, state: State) {
         private val state = state
         private val clicked = eventToPoint(e)
