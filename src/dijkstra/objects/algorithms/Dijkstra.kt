@@ -6,10 +6,17 @@ import java.util.*
 
 
 public class Dijkstra : SearchAlgorithm {
-    class Node(marker: Grid.Marker) {
-        public var totalDistance: Int = -1
+    class Node(marker: Grid.Marker) : Comparable<Node> {
+        public var totalDistance: Double = Double.POSITIVE_INFINITY
         public val marker: Grid.Marker = marker
         public val edges: MutableSet<Node> = HashSet()
+
+        override fun compareTo(other: Node): Int {
+            if (other.totalDistance.equals(totalDistance)) {
+                return 0
+            }
+            return if (totalDistance < other.totalDistance) -1 else 1
+        }
     }
     override fun execute(grid: Grid): List<Point> {
         val nodes = createNodes(grid)
@@ -61,7 +68,7 @@ public class Dijkstra : SearchAlgorithm {
     }
 
     private fun nodesToSet(nodes: ArrayList<Node>): TreeSet<Node> {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return TreeSet<Node>(nodes)
     }
 
     private fun findPath(startNode: Node, unvisited: TreeSet<Node>, grid: Grid): List<Point> {
