@@ -1,6 +1,6 @@
-package dijkstra.objects
+package mazesolver.objects
 
-import dijkstra.objects.algorithms.SearchAlgorithm
+import mazesolver.objects.algorithms.SearchAlgorithm
 import java.awt.Color
 import java.awt.Dimension
 import java.util.*

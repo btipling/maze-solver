@@ -1,7 +1,7 @@
-package dijkstra.objects.ui
+package mazesolver.objects.ui
 
-import dijkstra.objects.Grid
-import dijkstra.objects.State
+import mazesolver.objects.Grid
+import mazesolver.objects.State
 import java.awt.*
 import java.awt.event.*
 import java.util.logging.Logger

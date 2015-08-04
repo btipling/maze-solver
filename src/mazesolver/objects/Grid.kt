@@ -1,4 +1,4 @@
-package dijkstra.objects
+package mazesolver.objects
 
 
 class Grid(columns: Int, rows: Int) {

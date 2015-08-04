@@ -1,10 +1,10 @@
-package dijkstra.objects.ui
+package mazesolver.objects.ui
 
-import dijkstra.dialogs.DialogContainer
-import dijkstra.objects.State
-import dijkstra.objects.algorithms.AStar
-import dijkstra.objects.algorithms.BStar
-import dijkstra.objects.algorithms.Dijkstra
+import mazesolver.dialogs.DialogContainer
+import mazesolver.objects.State
+import mazesolver.objects.algorithms.AStar
+import mazesolver.objects.algorithms.BStar
+import mazesolver.objects.algorithms.Dijkstra
 import java.awt.Color
 import java.awt.Dimension
 import java.util.logging.Logger

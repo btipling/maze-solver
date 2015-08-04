@@ -1,4 +1,4 @@
-package dijkstra.dialogs;
+package mazesolver.dialogs;
 
 import javax.swing.*;
 

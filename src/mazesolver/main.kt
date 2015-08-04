@@ -1,8 +1,8 @@
-package dijkstra
+package mazesolver
 
-import dijkstra.dialogs.DialogContainer
-import dijkstra.objects.ui.Dialog
-import dijkstra.objects.State
+import mazesolver.dialogs.DialogContainer
+import mazesolver.objects.ui.Dialog
+import mazesolver.objects.State
 import java.awt.*
 import java.util.logging.Logger
 import javax.swing.BoxLayout

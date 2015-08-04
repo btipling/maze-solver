@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Dijkstra.iml" filepath="$PROJECT_DIR$/Dijkstra.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maze-solver.iml" filepath="$PROJECT_DIR$/maze-solver.iml" />
     </modules>
   </component>
 </project>

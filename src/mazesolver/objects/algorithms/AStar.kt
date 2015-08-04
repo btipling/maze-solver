@@ -1,14 +1,12 @@
-package dijkstra.objects.algorithms
+package mazesolver.objects.algorithms
 
-import dijkstra.objects.Grid
-import dijkstra.objects.Point
+import mazesolver.objects.Grid
+import mazesolver.objects.Point
 import java.util.logging.Logger
 
-public class BStar : SearchAlgorithm {
+
+public class AStar : SearchAlgorithm {
     override fun execute(grid: Grid, logger: Logger): List<Point> {
         throw UnsupportedOperationException()
     }
-
 }
-
-
