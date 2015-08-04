@@ -3,13 +3,16 @@ package dijkstra.objects.algorithms
 import dijkstra.objects.Grid
 import dijkstra.objects.Point
 import java.util.*
+import java.util.logging.Logger
 
 
 public class Dijkstra : SearchAlgorithm {
-    class Node(marker: Grid.Marker) : Comparable<Node> {
+    class Node(marker: Grid.Marker, x: Int, y: Int) : Comparable<Node> {
         public var totalDistance: Double = Double.POSITIVE_INFINITY
         public val marker: Grid.Marker = marker
         public val edges: MutableSet<Node> = HashSet()
+        public val x: Int = x
+        public val y: Int = y
 
         override fun compareTo(other: Node): Int {
             if (other.totalDistance.equals(totalDistance)) {
@@ -18,47 +21,44 @@ public class Dijkstra : SearchAlgorithm {
             return if (totalDistance < other.totalDistance) -1 else 1
         }
     }
-    override fun execute(grid: Grid): List<Point> {
+
+    override fun execute(grid: Grid, logger: Logger): List<Point> {
+        logger.info("Starting search")
         val nodes = createNodes(grid)
         val startNode = createNodeGraph(nodes, grid) ?: return ArrayList<Point>()
-        val unvisited = nodesToSet(nodes)
-        return findPath(startNode, unvisited, grid)
+        val unvisited = ArrayList<Node>(nodes)
+        return findPath(startNode, unvisited)
     }
 
     private fun createNodes(grid: Grid): ArrayList<Node> {
         val nodes = ArrayList<Node>()
-        for (i in 0..(grid.columns-1)) {
-            for (j in 0..(grid.rows-1)) {
-                nodes.add(Node(grid.get(i, j)))
+        for (x in 0..(grid.columns - 1)) {
+            for (y in 0..(grid.rows - 1)) {
+                nodes.add(Node(grid.get(x, y), x, y))
             }
         }
         return nodes
     }
 
     private fun getIndexFromPoint(point: Point, grid: Grid): Int {
-        return point.y * grid.rows + point.x
-    }
-
-    private fun getPointFromIndex(index: Int, grid: Grid): Point {
-        return Point(index/grid.rows, index % grid.rows)
+        return point.x * grid.rows + point.y
     }
 
     private fun createNodeGraph(nodes: ArrayList<Node>, grid: Grid): Node? {
         var start: Node? = null
-        for (i in 0..nodes.size()) {
+        for (i in 0..nodes.size() - 1) {
             val node = nodes[i]
-            val current = getPointFromIndex(i, grid)
-            if (current.x != 0) {
-                node.edges.add(nodes[getIndexFromPoint(Point(current.x - 1, current.y), grid)])
+            if (node.x != 0) {
+                node.edges.add(nodes[getIndexFromPoint(Point(node.x - 1, node.y), grid)])
             }
-            if (current.x < grid.columns - 1) {
-                node.edges.add(nodes[getIndexFromPoint(Point(current.x + 1, current.y), grid)])
+            if (node.x < grid.columns - 1) {
+                node.edges.add(nodes[getIndexFromPoint(Point(node.x + 1, node.y), grid)])
             }
-            if (current.y != 0) {
-                node.edges.add(nodes[getIndexFromPoint(Point(current.x, current.y - 1), grid)])
+            if (node.y != 0) {
+                node.edges.add(nodes[getIndexFromPoint(Point(node.x, node.y - 1), grid)])
             }
-            if (current.y < grid.rows - 1) {
-                node.edges.add(nodes[getIndexFromPoint(Point(current.x, current.y + 1), grid)])
+            if (node.y < grid.rows - 1) {
+                node.edges.add(nodes[getIndexFromPoint(Point(node.x, node.y + 1), grid)])
             }
             if (node.marker.equals(Grid.Marker.START)) {
                 start = node
@@ -67,12 +67,53 @@ public class Dijkstra : SearchAlgorithm {
         return start
     }
 
-    private fun nodesToSet(nodes: ArrayList<Node>): TreeSet<Node> {
-        return TreeSet<Node>(nodes)
+    private fun findPath(startNode: Node, unvisited: ArrayList<Node>): List<Point> {
+        val path = ArrayList<Point>()
+        startNode.totalDistance = 0.0
+        Collections.sort(unvisited)
+        while (!unvisited.isEmpty() && !unvisited.first().totalDistance.equals(Double.POSITIVE_INFINITY)) {
+            val next = unvisited.first()
+            visitNode(next)
+            if (next.marker.equals(Grid.Marker.END)) {
+                traceback(next, path)
+                break
+            }
+            unvisited.remove(next)
+            Collections.sort(unvisited)
+        }
+        return path
     }
 
-    private fun findPath(startNode: Node, unvisited: TreeSet<Node>, grid: Grid): List<Point> {
-        val path = ArrayList<Point>()
-        return path
+    private fun traceback(node: Node, path: ArrayList<Point>) {
+        if (node.marker.equals(Grid.Marker.START)) {
+            return
+        }
+        var currentMinDistance = Double.POSITIVE_INFINITY
+        var currentMinNode: Node? = null
+        for (edge in node.edges) {
+            if (edge.totalDistance < currentMinDistance) {
+                currentMinDistance = edge.totalDistance
+                currentMinNode = edge
+            }
+        }
+        if (currentMinNode == null) {
+            throw(Throwable("currentMindNode should never be null!"))
+        }
+        if (!node.marker.equals(Grid.Marker.END)) {
+            path.add(Point(node.x, node.y))
+        }
+        traceback(currentMinNode, path)
+    }
+
+    private fun visitNode(node: Node) {
+        val currentDistance = node.totalDistance + 1
+        for (edge in node.edges) {
+            if (edge.marker.equals(Grid.Marker.WALL)) {
+                continue
+            }
+            if (edge.totalDistance > currentDistance) {
+                edge.totalDistance = currentDistance
+            }
+        }
     }
 }

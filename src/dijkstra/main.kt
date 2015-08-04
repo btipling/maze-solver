@@ -19,7 +19,7 @@ private val logger = Logger.getLogger("DialogUI")
 
 public fun run () {
     val frame: JFrame = JFrame("FrameDemo")
-    val state = State()
+    val state = State(logger)
     val dialog = Dialog(state, logger)
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
     val myLabel: Label = Label("Sup")

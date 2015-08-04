@@ -46,4 +46,27 @@ class Grid(columns: Int, rows: Int) {
         }
         grid[x][y] = value
     }
+
+    fun clearAll() {
+        for (x in 0..grid.size()-1) {
+            val row = grid[x]
+            for (y in 0..row.size()-1) {
+                val m = row[y]
+                if (!m.equals(Marker.START) && !m.equals(Marker.END)) {
+                    row[y] = Marker.DEFAULT
+                }
+            }
+        }
+    }
+
+    fun clearPath() {
+        for (x in 0..grid.size()-1) {
+            val row = grid[x]
+            for (y in 0..row.size()-1) {
+                if (row[y].equals(Marker.PATH)) {
+                    row[y] = Marker.DEFAULT
+                }
+            }
+        }
+    }
 }

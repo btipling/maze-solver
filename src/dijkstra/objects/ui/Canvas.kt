@@ -172,6 +172,7 @@ class Canvas(state: State, logger: Logger) : JPanel() {
             Grid.Marker.OVER -> g2d.setColor(state.overColor)
             Grid.Marker.START -> g2d.setColor(state.startColor)
             Grid.Marker.END -> g2d.setColor(state.endColor)
+            Grid.Marker.PATH -> g2d.setColor(state.pathColor)
         }
         val s = state.boxSize
         g2d.fillRect(x * s, y * s, s, s)

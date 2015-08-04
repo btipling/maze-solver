@@ -23,7 +23,7 @@ public class Dialog(state: State, logger: Logger) : DialogContainer() {
         val picks = arrayOf("Dijkstra", "A*", "B*")
         algorithmPicker.setModel(DefaultComboBoxModel(picks))
         setStatus("Started.")
-        findPathButton.addActionListener({
+        findPathButton.addActionListener {
             val alg: String = algorithmPicker.getSelectedItem() as String
             setStatus("Finding solution.")
             when(alg) {
@@ -31,7 +31,11 @@ public class Dialog(state: State, logger: Logger) : DialogContainer() {
                 "A*" -> state.run(AStar())
                 "B*" -> state.run(BStar())
             }
-        })
+        }
+        clearAllButton.addActionListener {
+            state.grid.clearAll()
+            refresh()
+        }
         state.addListener(Runnable({refresh()}))
     }
 

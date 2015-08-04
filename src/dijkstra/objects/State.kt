@@ -5,9 +5,12 @@ import java.awt.Color
 import java.awt.Dimension
 import java.util.*
 import java.util.concurrent.Executors
+import java.util.logging.Logger
+import javax.swing.SwingUtilities
 
 
-class State {
+class State(logger: Logger) {
+    private val logger = logger
     public val squaredSize: Int = 500;
     public val squaredGridCount: Int = 25;
     public val boxSize: Int = squaredSize/squaredGridCount
@@ -18,6 +21,7 @@ class State {
     public val startColor: Color = Color.RED;
     public val endColor: Color = Color.BLUE;
     public val overColor: Color = Color.GRAY;
+    public val pathColor: Color = Color.GREEN
     public val grid: Grid = Grid(squaredGridCount, squaredGridCount)
     public val stateChangeListeners : ArrayList<Runnable> = ArrayList()
     var executor = Executors.newFixedThreadPool(1)
@@ -25,13 +29,20 @@ class State {
 
     fun run(al: SearchAlgorithm) {
         executor.submit({
-            val solution = al.execute(this.grid)
-            for (point in solution) {
-                grid.set(point.x, point.y, Grid.Marker.PATH)
+            grid.clearPath()
+            try {
+                val solution = al.execute(grid, logger)
+                for (point in solution) {
+                    grid.set(point.x, point.y, Grid.Marker.PATH)
+                }
+            } catch (t: Throwable) {
+                t.printStackTrace()
             }
-            for (stateChangeListener in stateChangeListeners) {
-                stateChangeListener.run()
-            }
+            SwingUtilities.invokeLater({
+                for (stateChangeListener in stateChangeListeners) {
+                    stateChangeListener.run()
+                }
+            })
         })
     }
 
