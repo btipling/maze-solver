@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
 private val logger = Logger.getLogger("DialogUI")
 
 public fun run () {
-    val frame: JFrame = JFrame("FrameDemo")
+    val frame: JFrame = JFrame("Maze Solver")
     val state = State(logger)
     val dialog = Dialog(state, logger)
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
