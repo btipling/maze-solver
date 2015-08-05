@@ -51,8 +51,14 @@ class Canvas(state: State, logger: Logger) : JPanel() {
                 if (dragMarker == null) {
                     return
                 }
-                val dM = dragMarker!!
                 val eventLocation = EventLocation(e, state)
+                if (eventLocation.x >= state.grid.columns || eventLocation.y >= state.grid.rows) {
+                    return;
+                }
+                if (eventLocation.x < 0 || eventLocation.y < 0) {
+                    return;
+                }
+                val dM = dragMarker!!
                 state.grid.set(eventLocation.x, eventLocation.y, dM)
                 repaint()
             }

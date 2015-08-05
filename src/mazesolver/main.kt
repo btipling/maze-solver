@@ -11,7 +11,6 @@ import javax.swing.JPanel
 import javax.swing.SwingUtilities
 
 fun main(args: Array<String>) {
-    println("Hello World!");
     SwingUtilities.invokeLater{run()};
 }
 

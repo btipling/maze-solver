@@ -10,7 +10,7 @@ public class Dijkstra : SearchAlgorithm {
     class Node(marker: Grid.Marker, x: Int, y: Int) : Comparable<Node> {
         public var totalDistance: Double = Double.POSITIVE_INFINITY
         public val marker: Grid.Marker = marker
-        public val edges: MutableSet<Node> = HashSet()
+        private val edges: ArrayList<Node> = ArrayList()
         public val x: Int = x
         public val y: Int = y
 
@@ -19,6 +19,15 @@ public class Dijkstra : SearchAlgorithm {
                 return 0
             }
             return if (totalDistance < other.totalDistance) -1 else 1
+        }
+
+        public fun add(node: Node) {
+            edges.add(node)
+            Collections.sort(edges)
+        }
+
+        public fun getEdges(): List<Node> {
+            return ArrayList(edges)
         }
     }
 
@@ -49,16 +58,16 @@ public class Dijkstra : SearchAlgorithm {
         for (i in 0..nodes.size() - 1) {
             val node = nodes[i]
             if (node.x != 0) {
-                node.edges.add(nodes[getIndexFromPoint(Point(node.x - 1, node.y), grid)])
+                node.add(nodes[getIndexFromPoint(Point(node.x - 1, node.y), grid)])
             }
             if (node.x < grid.columns - 1) {
-                node.edges.add(nodes[getIndexFromPoint(Point(node.x + 1, node.y), grid)])
+                node.add(nodes[getIndexFromPoint(Point(node.x + 1, node.y), grid)])
             }
             if (node.y != 0) {
-                node.edges.add(nodes[getIndexFromPoint(Point(node.x, node.y - 1), grid)])
+                node.add(nodes[getIndexFromPoint(Point(node.x, node.y - 1), grid)])
             }
             if (node.y < grid.rows - 1) {
-                node.edges.add(nodes[getIndexFromPoint(Point(node.x, node.y + 1), grid)])
+                node.add(nodes[getIndexFromPoint(Point(node.x, node.y + 1), grid)])
             }
             if (node.marker.equals(Grid.Marker.START)) {
                 start = node
@@ -90,7 +99,7 @@ public class Dijkstra : SearchAlgorithm {
         }
         var currentMinDistance = Double.POSITIVE_INFINITY
         var currentMinNode: Node? = null
-        for (edge in node.edges) {
+        for (edge in node.getEdges()) {
             if (edge.totalDistance < currentMinDistance) {
                 currentMinDistance = edge.totalDistance
                 currentMinNode = edge
@@ -107,7 +116,7 @@ public class Dijkstra : SearchAlgorithm {
 
     private fun visitNode(node: Node) {
         val currentDistance = node.totalDistance + 1
-        for (edge in node.edges) {
+        for (edge in node.getEdges()) {
             if (edge.marker.equals(Grid.Marker.WALL)) {
                 continue
             }
