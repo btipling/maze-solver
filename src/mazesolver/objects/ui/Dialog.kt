@@ -36,7 +36,10 @@ public class Dialog(state: State, logger: Logger) : DialogContainer() {
             state.grid.clearAll()
             refresh()
         }
-        state.addListener(Runnable({refresh()}))
+        state.addChangeListener(Runnable({refresh()}))
+        state.addStatusListener({status: String ->
+            setStatus(status)
+        })
     }
 
     public fun setStatus(status: String) {

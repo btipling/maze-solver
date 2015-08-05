@@ -2,11 +2,13 @@ package mazesolver.objects.algorithms
 
 import mazesolver.objects.Grid
 import mazesolver.objects.Point
+import mazesolver.objects.State
 import java.util.*
 import java.util.logging.Logger
 
 
 public class Dijkstra : SearchAlgorithm {
+
     class Node(marker: Grid.Marker, x: Int, y: Int) : Comparable<Node> {
         public var totalDistance: Double = Double.POSITIVE_INFINITY
         public val marker: Grid.Marker = marker
@@ -31,10 +33,10 @@ public class Dijkstra : SearchAlgorithm {
         }
     }
 
-    override fun execute(grid: Grid, logger: Logger): List<Point> {
-        logger.info("Starting search")
-        val nodes = createNodes(grid)
-        val startNode = createNodeGraph(nodes, grid) ?: return ArrayList<Point>()
+    override fun execute(state: State): List<Point> {
+        state.getLogger().info("Starting search")
+        val nodes = createNodes(state.grid)
+        val startNode = createNodeGraph(nodes, state.grid) ?: return ArrayList<Point>()
         val unvisited = ArrayList<Node>(nodes)
         return findPath(startNode, unvisited)
     }
@@ -124,5 +126,9 @@ public class Dijkstra : SearchAlgorithm {
                 edge.totalDistance = currentDistance
             }
         }
+    }
+
+    override fun getName(): String {
+        return "Dijkstra"
     }
 }
