@@ -1,4 +1,4 @@
-#Dijkstra
+#Maze Solver
 
 A fully functional app to demonstrate path finding, written in Kotlin. You can pick between Dijkstra and A*, draw
 walls and try to see how it will find the best path.
