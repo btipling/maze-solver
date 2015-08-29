@@ -148,6 +148,13 @@ class Canvas(state: State, logger: Logger) : JPanel() {
         g2d.fillRect(0, 0, width, height)
         val columnWidth = state.canvasDimension.width/state.grid.columns
         val columnHeight = state.canvasDimension.height/state.grid.rows
+        for (x: Int in 0..state.grid.columns-1) {
+            for (y: Int in 0..state.grid.rows-1) {
+                if (!state.grid.get(x, y).equals(Grid.Marker.DEFAULT)) {
+                    paintGrid(x, y, g2d)
+                }
+            }
+        }
         g2d.setColor(state.lineColor)
         for (x: Int in 1..state.grid.columns) {
             val xPos = x * columnWidth
@@ -156,13 +163,6 @@ class Canvas(state: State, logger: Logger) : JPanel() {
         for (y: Int in 1..state.grid.rows) {
             val yPos = y * columnHeight
             g2d.drawLine(0, yPos, state.canvasDimension.width, yPos)
-        }
-        for (x: Int in 0..state.grid.columns-1) {
-            for (y: Int in 0..state.grid.rows-1) {
-                if (!state.grid.get(x, y).equals(Grid.Marker.DEFAULT)) {
-                    paintGrid(x, y, g2d)
-                }
-            }
         }
         if (over != null) {
             val o = over!!
@@ -179,6 +179,7 @@ class Canvas(state: State, logger: Logger) : JPanel() {
             Grid.Marker.START -> g2d.setColor(state.startColor)
             Grid.Marker.END -> g2d.setColor(state.endColor)
             Grid.Marker.PATH -> g2d.setColor(state.pathColor)
+            Grid.Marker.VISITED -> g2d.setColor(state.visitedColor)
         }
         val s = state.boxSize
         g2d.fillRect(x * s, y * s, s, s)

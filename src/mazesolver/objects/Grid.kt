@@ -9,7 +9,7 @@ class Grid(columns: Int, rows: Int) {
     private var endPos: MarkerPos? = null
 
     public enum class Marker {
-        DEFAULT, WALL, OVER, START, END, PATH
+        DEFAULT, WALL, OVER, START, END, PATH, VISITED
     }
 
     private class MarkerPos(x: Int, y: Int) {
@@ -63,7 +63,7 @@ class Grid(columns: Int, rows: Int) {
         for (x in 0..grid.size()-1) {
             val row = grid[x]
             for (y in 0..row.size()-1) {
-                if (row[y].equals(Marker.PATH)) {
+                if (row[y].equals(Marker.PATH) || row[y].equals(Marker.VISITED)) {
                     row[y] = Marker.DEFAULT
                 }
             }

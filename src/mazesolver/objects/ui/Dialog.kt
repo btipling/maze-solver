@@ -3,7 +3,6 @@ package mazesolver.objects.ui
 import mazesolver.dialogs.DialogContainer
 import mazesolver.objects.State
 import mazesolver.objects.algorithms.AStar
-import mazesolver.objects.algorithms.BStar
 import mazesolver.objects.algorithms.Dijkstra
 import java.awt.Color
 import java.awt.Dimension
@@ -20,7 +19,7 @@ public class Dialog(state: State, logger: Logger) : DialogContainer() {
         graphPanelContainer.setBorder(LineBorder(Color.DARK_GRAY, 1))
         graphPanelContainer.setLayout(BoxLayout(graphPanelContainer, BoxLayout.LINE_AXIS))
         graphPanelContainer.add(Canvas(state, logger));
-        val picks = arrayOf("Dijkstra", "A*", "B*")
+        val picks = arrayOf("Dijkstra", "A*")
         algorithmPicker.setModel(DefaultComboBoxModel(picks))
         setStatus("Started.")
         findPathButton.addActionListener {
@@ -29,7 +28,6 @@ public class Dialog(state: State, logger: Logger) : DialogContainer() {
             when(alg) {
                 "Dijkstra" -> state.run(Dijkstra())
                 "A*" -> state.run(AStar())
-                "B*" -> state.run(BStar())
             }
         }
         clearAllButton.addActionListener {

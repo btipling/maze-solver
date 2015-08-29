@@ -15,13 +15,14 @@ class State(logger: Logger) {
     public val squaredGridCount: Int = 30;
     public val boxSize: Int = squaredSize/squaredGridCount
     public val canvasDimension: Dimension = Dimension(squaredSize, squaredSize)
-    public val canvasBG: Color = Color.WHITE;
-    public val lineColor: Color = Color.DARK_GRAY;
-    public val wallColor: Color = Color.DARK_GRAY;
-    public val startColor: Color = Color.RED;
-    public val endColor: Color = Color.BLUE;
-    public val overColor: Color = Color.GRAY;
-    public val pathColor: Color = Color.GREEN
+    public val canvasBG: Color = Color.WHITE
+    public val lineColor: Color = Color(213, 222, 217)
+    public val wallColor: Color = Color(85, 98, 112)
+    public val startColor: Color = Color(255, 107, 107)
+    public val endColor: Color = Color(78, 205, 196)
+    public val overColor: Color = Color(194, 200, 193)
+    public val pathColor: Color = Color(199, 244, 100)
+    public val visitedColor: Color = Color(255, 255, 208)
     public val grid: Grid = Grid(squaredGridCount, squaredGridCount)
     public val stateChangeListeners : ArrayList<Runnable> = ArrayList()
     public val statusChangeListeners : ArrayList<((String) -> Unit)> = ArrayList()
@@ -49,7 +50,7 @@ class State(logger: Logger) {
                 }
                 val endTime: Long = System.currentTimeMillis()
                 for (statusListener in statusChangeListeners) {
-                    statusListener(java.lang.String.format("Time: %d ms. Distance: %d. Algorithm: %s",
+                    statusListener("Time: %d ms. Distance: %d. Algorithm: %s".format(
                             endTime - startTime, distance, al.getName()))
                 }
             })
